@@ -1,3 +1,6 @@
 holoman:
   name: namjune
   how-long: 10
+
+server:
+  port: 0
