@@ -1,7 +1,4 @@
-server:
-  ssl:
-    key-store: keystore.p12
-    key-store-type: PKCS12
-    key-store-password: 123456
-    key-alias: tomcat
-  port: 8443
+nj:
+  name: namjune
+  age: ${random.int(0,100)}
+  fullName: ${nj.name} Kim
