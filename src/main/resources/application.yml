@@ -3,3 +3,7 @@ nj:
   age: ${random.int(0,100)}
   fullName: ${nj.name} Kim
   sessionTimeout: 30
+
+spring:
+  profiles:
+    active: prod
