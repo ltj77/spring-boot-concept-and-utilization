@@ -1,15 +1,25 @@
 package io.namjune.springbootconceptandutilization;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import javax.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.convert.DurationUnit;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 @Component
 @ConfigurationProperties("nj")
+@Validated
 public class NamjuneProperties {
 
+    @NotEmpty
     private String name;
     private int age;
     private String fullName;
+
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration sessionTimeout = Duration.ofSeconds(30);
 
     public String getName() {
         return name;
@@ -33,5 +43,13 @@ public class NamjuneProperties {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Duration getSessionTimeout() {
+        return sessionTimeout;
+    }
+
+    public void setSessionTimeout(Duration sessionTimeout) {
+        this.sessionTimeout = sessionTimeout;
     }
 }

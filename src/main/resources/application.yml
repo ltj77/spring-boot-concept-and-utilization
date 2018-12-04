@@ -2,3 +2,4 @@ nj:
   name: namjune
   age: ${random.int(0,100)}
   fullName: ${nj.name} Kim
+  sessionTimeout: 30
