@@ -6,7 +6,7 @@ nj:
 
 spring:
   profiles:
-    active: prod
+    active: test
 
   output:
     ansi:
@@ -15,4 +15,7 @@ spring:
 logging:
   path: logs
   level:
-    io.namjune.springbootconceptandutilization: INFO
+    io.namjune: debug
+
+server:
+  port: 0
