@@ -1,21 +1,2 @@
-nj:
-  name: namjune
-  age: ${random.int(0,100)}
-  fullName: ${nj.name} Kim
-  sessionTimeout: 30
-
-spring:
-  profiles:
-    active: test
-
-  output:
-    ansi:
-      enabled: always
-
-logging:
-  path: logs
-  level:
-    io.namjune: debug
-
 server:
   port: 0
