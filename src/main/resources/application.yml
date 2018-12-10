@@ -7,3 +7,12 @@ nj:
 spring:
   profiles:
     active: prod
+
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  path: logs
+  level:
+    io.namjune.springbootconceptandutilization: INFO
