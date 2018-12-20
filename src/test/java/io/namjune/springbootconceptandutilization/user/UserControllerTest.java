@@ -1,12 +1,10 @@
 package io.namjune.springbootconceptandutilization.user;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,11 +33,11 @@ public class UserControllerTest {
         String userJson = "{\"username\":\"namjune\", \"password\":\"123\"}";
         mockMvc.perform(post("/users/create")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .accept(MediaType.APPLICATION_JSON_UTF8)
+            .accept(MediaType.APPLICATION_XML)
             .content(userJson)
         )
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.username", is(equalTo("namjune"))))
-            .andExpect(jsonPath("$.password", is(equalTo("123"))));
+            .andExpect(xpath("/User/username").string("namjune"))
+            .andExpect(xpath("/User/password").string("123"));
     }
 }
