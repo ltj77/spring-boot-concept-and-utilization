@@ -1,5 +1,6 @@
 package io.namjune.springbootconceptandutilization.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -8,6 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlHeading1;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import java.io.IOException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,9 @@ public class SampleControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    WebClient webClient;
+
     @Test
     public void hello() throws Exception {
         mockMvc.perform(get("/hello"))
@@ -30,5 +38,12 @@ public class SampleControllerTest {
             .andExpect(view().name("hello"))
             .andExpect(model().attribute("name", "nj"))
             .andExpect(content().string(containsString("nj")));
+    }
+
+    @Test
+    public void htmlunit() throws IOException {
+        HtmlPage page = webClient.getPage("/hello");
+        HtmlHeading1 h1 = page.getFirstByXPath("//h1");
+        assertThat(h1.getTextContent()).isEqualToIgnoringCase("nj");
     }
 }

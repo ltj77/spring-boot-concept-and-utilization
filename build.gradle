@@ -29,4 +29,6 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-freemarker')
     compileOnly('org.projectlombok:lombok')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.seleniumhq.selenium:htmlunit-driver')
+    testCompile('net.sourceforge.htmlunit:htmlunit')
 }
