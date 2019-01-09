@@ -5,6 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-<h1></h1>
+<h1>CORS Test</h1>
+<script src="/webjars/jquery/dist/jquery.min.js"></script>
+<script>
+  $(function() {
+    $.ajax("http://localhost:8080/hello")
+        .done(function(msg) {
+          alert(msg);
+        })
+        .fail(function() {
+          alert("fail");
+        });
+  });
+</script>
 </body>
 </html>
