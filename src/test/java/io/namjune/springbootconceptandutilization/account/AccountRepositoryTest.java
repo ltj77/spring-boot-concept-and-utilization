@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.util.Optional;
 import javax.sql.DataSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,5 +35,21 @@ public class AccountRepositoryTest {
             System.out.println(metaData.getDriverName());
             System.out.println(metaData.getUserName());
         }
+    }
+
+    @Test
+    public void account() {
+        Account account = new Account();
+        account.setUsername("nj");
+        account.setPassword("1234");
+
+        Account newAccount = accountRepository.save(account);
+        assertThat(newAccount).isNotNull();
+
+        Optional<Account> existingAccount = accountRepository.findByUsername(newAccount.getUsername());
+        assertThat(existingAccount).isNotEmpty();
+
+        Optional<Account> notExistingAccount = accountRepository.findByUsername("test");
+        assertThat(notExistingAccount).isNotEmpty();
     }
 }
