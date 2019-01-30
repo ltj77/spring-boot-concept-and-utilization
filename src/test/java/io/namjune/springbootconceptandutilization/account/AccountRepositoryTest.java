@@ -50,6 +50,6 @@ public class AccountRepositoryTest {
         assertThat(existingAccount).isNotEmpty();
 
         Optional<Account> notExistingAccount = accountRepository.findByUsername("test");
-        assertThat(notExistingAccount).isNotEmpty();
+        assertThat(notExistingAccount).isEmpty();
     }
 }
