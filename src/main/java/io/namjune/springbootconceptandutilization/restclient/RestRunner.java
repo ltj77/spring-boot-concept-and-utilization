@@ -4,32 +4,57 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
 public class RestRunner implements ApplicationRunner {
 
     @Autowired
-    RestTemplateBuilder restTemplateBuilder;
+    WebClient.Builder builder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        RestTemplate restTemplate = restTemplateBuilder.build();
+        WebClient webClient = builder.build();
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        String hiResult = restTemplate.getForObject("http://localhost:8080/hi", String.class);
-        log.info("/hi API Result : " + hiResult);
+        // 이 라인이 실행되도 아무런 동작을 하지 않는다.
+        Mono<String> hiMono = webClient.get().uri("http://localhost:8080/hi")
+            .retrieve()
+            .bodyToMono(String.class);
 
-        String byeResult = restTemplate.getForObject("http://localhost:8080/bye", String.class);
-        log.info("/bye API Result : " + byeResult);
+        // subscribe를 해줘야 스트리밍이 일어난다.
+        hiMono.subscribe(hiResult -> {
+            log.info("/hi API Result : " + hiResult);
 
-        stopWatch.stop();
-        log.info(stopWatch.prettyPrint());
+            // Asynchronus 이므로 어느것이 먼저 끝날지 모른다. 스탑워치가 돌고있으면 멈추고,
+            if (stopWatch.isRunning()) {
+                stopWatch.stop();
+            }
+
+            // 로그를 찍고, 스탑워치를 다시 돌려줘야 한다. Asynchronus 이므로 순서보장이 안되기 때문에.
+            log.info(stopWatch.prettyPrint());
+            stopWatch.start();
+        });
+
+        Mono<String> byeMono = webClient.get().uri("http://localhost:8080/bye")
+            .retrieve()
+            .bodyToMono(String.class);
+
+        byeMono.subscribe(byeResult -> {
+            log.info("/bye API Result : " + byeResult);
+
+            if (stopWatch.isRunning()) {
+                stopWatch.stop();
+            }
+
+            log.info(stopWatch.prettyPrint());
+            stopWatch.start();
+        });
     }
 }
